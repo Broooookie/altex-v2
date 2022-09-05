@@ -1,1 +1,1 @@
-#lara6vue-template
+#lara6vue-template# spectcoin-administrator
