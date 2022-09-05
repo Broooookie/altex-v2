@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\ClientWallet;
 use App\Http\Requests\Client\IndexClientRequest;
 use App\Http\Requests\Client\StoreClientRequest;
 use App\Http\Requests\Client\UpdateClientRequest;
@@ -23,7 +24,7 @@ class ClientController extends Controller
         $auth = Auth::user();
         if($auth->role == 'ADMINISTRATOR')
         {
-            $clients = Client::with('user', 'clientWallets', 'clientDeposits', ' clientWithdraws', 'orders')->get();
+            $clients = Client::with('user', 'clientWallets', 'clientDeposits', 'clientWithdraws', 'orders')->get();
 
             return response()->json(
                 [
@@ -66,6 +67,8 @@ class ClientController extends Controller
         // dd($user->id);
         $client = Client::create(array_merge($request->validated(), ['user_id' => $user->id, 'state' => 'PENDING', 'registered_ip' => $request->ip()]));
 
+        $clientWallet = ClientWallet::create(['client_id' => $client->id, 'coin_id' => 1, 'wallet_balance' => 0 ]);
+
         return response()->json(
             [
                 'client' => $client
@@ -105,11 +108,11 @@ class ClientController extends Controller
     public function update(UpdateClientRequest $request, Client $client)
     {
         //
-        $client = Client::where('client_id', $client)->first();
-        $user = User::where('id', $client->id)->first();
+        // dd($client->id);
+        $client = Client::where('id', $client->id)->first();
+        $user = User::where('id', $client->user_id)->first();
         $user->update($request->validated());
         $client->update($request->validated());
-
         return response()->json(
             [
                 'client' => $client

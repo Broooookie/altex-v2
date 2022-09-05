@@ -18,10 +18,11 @@ class CreateClientDepositsTable extends Migration
             $table->uuid('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->uuid('client_wallet_id');
-            $table->foreign('client_wallet_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('client_wallet_id')->references('id')->on('client_wallets')->onDelete('cascade');
             $table->string('top_up_account');
             $table->double('recharge_amount');
-            $table->string('included_in_performance');
+            $table->enum('included_in_performance', ['YES', 'NO']);
+            $table->string('transaction_type');
             $table->enum('recharge_status', ['PENDING', 'APPROVED', 'DISSAPROVED']);
             $table->string('account_type');
             $table->string('ip_address');

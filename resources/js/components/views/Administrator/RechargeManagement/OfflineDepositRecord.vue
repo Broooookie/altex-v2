@@ -432,6 +432,12 @@ export default {
         //         this.editedDepositIndex = -1;
         //     }, 500);
         // },
+    },
+    beforeRouteEnter (to, from, next) {
+        if(sessionStorage.getItem('user-type') != "ADMINISTRATOR"){
+          return next('/')
+        }
+        next();
     }
 };
 

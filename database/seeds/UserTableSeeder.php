@@ -1,5 +1,8 @@
 <?php
 
+use App\Client;
+use App\ClientWallet;
+use App\Coin;
 use App\Hospital;
 use App\User;
 use Illuminate\Database\Seeder;
@@ -23,61 +26,47 @@ class UserTableSeeder extends Seeder
         ]);
 
         /** Customer */
-        $userHospital = User::create([
-            'username' => 'hospital',
-            'password' => 'hospital',
-            'username' => 'hospital',
-            'role' => 'HOSPITAL',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $hospital =  Hospital::create([
-            'name' => 'EJ Lumata',
-            'number' => '09664375522',
-            'user_id' => $userHospital->id,
-            'address' => 'Pasonanca, Zamboanga City',
-            'status' => 'RECIEVING',
-            'longitude' => 122.079,
-            'latitude' => 6.9214,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $hospitalRoom = \App\HospitalRoom::create([
-            'hospital_id' => $hospital->id,
-            'room_no' => 'ROOM 1',
-            'status' => 'VACANT',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $occupantUser = User::create([
-            'username' => 'occupant',
-            'password' => 'occupant',
-            'role' => 'OCCUPANT',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $occupant = \App\Occupant::create([
-            'name' => 'Alfadzry Jumli',
-            'user_id' => $occupantUser->id,
-            'status' => 'COVID',
-            'type' => 'ADMITTED',
-            'number' => '09664375522',
-            'address' => 'Dito lang sa tabe',
+        $userClient = User::create([
+            'username' => 'client',
+            'password' => 'client123',
+            'role' => 'CLIENT',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // $roomRequest = \App\RoomRequest::create([
-        //     'hospital_room_id' => $hospitalRoom->id,
-        //     'occupant_id' => $occupant->id,
-        //     'type' => 'NON_COVID',
-        //     'status' => 'CONFINED',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        $client = Client::create([
+            'user_id' => $userClient->id,
+            'role' => 'CLIENT',
+            'membership_level' => 'VIP1',
+            'member_miner_level' => 0,
+            'mobile_number' => '09664375522',
+            'email' => 'janedoe@gmail.com',
+            'reciever_verification_code_account' => 'X1552',
+            'withdraw_transfer_status' => 'NOT_ALLOWED',
+            'status' => 'USABLE',
+            'referal_email' => 'johndoe@gmail.com',
+            'client_referal_id' => 1,
+            'agree_to_contract_agreement' => 'YES', 
+            'registered_ip' => '127.0.0.1',
+            'last_logined_ip' => '127.0.0.1',
+            'current_logined_ip' => '127.0.0.1',
+            'registered_source' => 'asd',
+            'number_of_logins' => 0,
+            'queue' => 0
+        ]);
+
+        $coin = Coin::create([
+            // 'client_id' => $client->id,
+            'name' => 'USDT',
+            'logo' => 'usdt',
+        ]);
+
+        $clientWallet = ClientWallet::create([
+            'client_id' => $client->id,
+            'coin_id' => $coin->id,
+            'wallet_balance' => 0,
+        ]);
+
+       
     }
 }

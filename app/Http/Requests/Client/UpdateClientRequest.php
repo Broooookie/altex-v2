@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateClientRequest extends FormRequest
 {
@@ -34,11 +36,11 @@ class UpdateClientRequest extends FormRequest
         return [
             //
             'username' => ['required', Rule::unique('users')->ignore($username, 'username')],
-            'password' => 'required|confirmed|min:8',
             'email' => ['required', Rule::unique('users')->ignore($email, 'email')],
 
             'role' => 'required',
-            'moblie_number' => 'required',
+            'mobile_number' => 'required',
+            'nickname' => 'nullable',
             'email' => ['required', Rule::unique('clients')->ignore($email, 'email')],
             'reciever_verification_code_account' => 'required',
             'referal_email' => 'nullable',

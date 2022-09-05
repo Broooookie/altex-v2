@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class ClientDeposit extends Model
 {
+    use UsesUuid;
     //
-    protected $fillable = ['client_id', 'client_wallet_id', 'top_up_account', 'recharge_amount', 'included_in_performance', 'recharge_status', 'account_type', 'ip_address', 'submission_time', 'response_time'];
+    protected $fillable = ['client_id', 'client_wallet_id', 'transaction_type', 'top_up_account', 'recharge_amount', 'included_in_performance', 'recharge_status', 'account_type', 'ip_address', 'submission_time', 'response_time'];
     
     public function client()
     {
@@ -23,7 +25,4 @@ class ClientDeposit extends Model
     {
         return $this->belongsTo(TransferCertificate::class);
     }
-
-    
-
 }

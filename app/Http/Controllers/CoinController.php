@@ -18,7 +18,7 @@ class CoinController extends Controller
     public function index(IndexCoinRequest $request)
     {
         //
-        $coins = Coin::with('coinWallets')->get();
+        $coins = Coin::with('clientWallets')->get();
 
         return response()->json(
             [

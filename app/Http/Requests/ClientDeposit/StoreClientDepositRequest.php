@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ClientDeposit;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreClientDepositRequest extends FormRequest
 {
@@ -33,10 +34,10 @@ class StoreClientDepositRequest extends FormRequest
         return [
             //
             'client_id' => 'required',
-            'client_wallet_id' => 'required',
-            'top_up_account' => 'required',
+            'coin_id' => 'required',
             'recharge_amount' => 'required',
             'included_in_performance' => 'required',
+            'transaction_type' => 'required',
             'account_type' => 'required'
         ];
     }

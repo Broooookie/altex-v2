@@ -37,6 +37,9 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             Route::get('offline-deposit-audit', 'ClientDepositController@depositAudit');
             Route::get('offline-deposit-record', 'ClientDepositController@depositRecord');
             Route::get('currency-transfer-review', 'ClientDepositController@depositRecord');
+            Route::apiResource('clients', 'ClientController');
+            Route::apiResource('coins', 'CoinController');
+            Route::apiResource('deposits', 'ClientDepositController');
             // Route::apiResource('hospitals', 'HospitalController');
 
         }

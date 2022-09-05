@@ -33,6 +33,7 @@ class StoreClientRequest extends FormRequest
 
             'role' => 'required',
             'mobile_number' => 'required',
+            'nickname' => 'nullable',
             'email' => 'required|unique:clients',
             'reciever_verification_code_account' => 'required',
             'referal_email' => 'nullable',

@@ -8,6 +8,7 @@ use App\ClientWallet;
 use App\Http\Requests\Client\IndexClientRequest;
 use App\Http\Requests\ClientDeposit\IndexClientDepositRequest;
 use App\Http\Requests\ClientDeposit\StoreClientDepositRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,10 +25,10 @@ class ClientDepositController extends Controller
        $auth = Auth::user();
         if($auth->role == 'ADMINISTRATOR')
         {
-            $client = Client::with('clientDeposits')->get();
+            $client = ClientDeposit::with('client')->get();
             return response()->json(
                 [
-                    'data' => $client
+                    'clients' => $client
                 ]
             );
         }
@@ -61,15 +62,70 @@ class ClientDepositController extends Controller
     public function store(StoreClientDepositRequest $request)
     {
         //Logic here is add coin to wallet
-        $auth = Auth::user();
-        $client = Client::where('user_id', $auth->id)->first();
-        $clientDeposit = ClientDeposit::create($request->validated());
 
-        return response()->json(
-            [
-                'clientDeposit' => $clientDeposit
-            ]
-        );
+        $auth = Auth::user();
+        if($auth->role == 'ADMINISTRATOR')
+        {
+
+            $coin = $request->input('coin_id');
+            $transaction_type = $request->input('transaction_type');
+            // dd($transaction_type);
+            $included_in_performance = $request->input('included_in_performance');
+            $mytime = Carbon::now();
+            
+            $client = Client::where('id', $request->input('client_id'))->first();
+            $clientWallet = ClientWallet::where('client_id', $client->id)->where('coin_id', $coin)->first();
+            // dd($clientWallet);
+
+            if($clientWallet == null)
+            {
+                $clientWallet = ClientWallet::create(array_merge([
+                    'client_id' => $client->id, 'coin_id' => $coin, 'wallet_balance' => 0
+                ]));
+
+                $clientDeposit = ClientDeposit::create(
+                   array_merge( ['client_id' => $client->id, 'client_wallet_id' => $clientWallet->id, 
+                                'top_up_account' => 'asd', 'recharge_status' => 'PENDING',
+                                'ip_address' => $request->ip(), 'submission_time' => $mytime->toDateTimeString(),
+                                'response_time' => $mytime->toDateTimeString()
+                ], $request->validated())
+                );
+
+                return response()->json(
+                    [
+                        'deposits' => $clientDeposit
+                    ]
+                );
+            }
+            else
+            {
+
+                // dd($clientWallet->id, $clientWallet->coin_id);
+                $clientDeposit = ClientDeposit::create(
+                    array_merge( ['client_wallet_id' => $clientWallet->id, 'top_up_account' => 'asd', 'recharge_status' => 'PENDING',
+                                     'ip_address' => $request->ip(), 'submission_time' => $mytime->toDateTimeString(),
+                                     'response_time' => $mytime->toDateTimeString()
+                 ], $request->validated())
+                 );
+ 
+                 return response()->json(
+                     [
+                         'deposits' => $clientDeposit
+                     ]
+                 );
+            }
+
+           
+
+        }
+        // $client = Client::where('user_id', $auth->id)->first();
+        // $clientDeposit = ClientDeposit::create($request->validated());
+
+        // return response()->json(
+        //     [
+        //         'clientDeposit' => $clientDeposit
+        //     ]
+        // );
     }
 
     /**
@@ -150,7 +206,7 @@ class ClientDepositController extends Controller
             $client = ClientDeposit::with('client')->where('recharge_status', 'PENDING')->get();
             return response()->json(
                 [
-                    'data' => $client
+                    'clients' => $client
                 ]
             );
         }

@@ -180,16 +180,15 @@ export default {
             },
 
             tablePerformanceHeaders: [
-                { text: "Serial Number", value: "id" },
-                { text: "UID", value: "client.uid" },
+                { text: "Role", value: "role" },
                 { text: "Email", value: "email" },
-                { text: "Mobile Number", value: "mobile_number" },
-                { text: "State", value: "" },
-                { text: "Picture", value: "" },
-                { text: "Remarks", value: "" },
-                { text: "Upload Time", value: "" },
-                { text: "Handler", value: "" },
-                { text: "Processing Time", value: "" },
+                { text: "UID", value: "id" },
+                { text: "Nickname", value: "nickname" },
+                { text: "Coin", value: "coin.name" },
+                { text: "Deposit", value: "deposit" },
+                { text: "withdrawal", value: "withdrawal" },
+                { text: "Performance Coin", value: "" },
+                { text: "Commission", value: "" },
                 {
                     text: "Actions",
                     value: "actions",
@@ -427,6 +426,12 @@ export default {
         //         this.editedPerformanceIndex = -1;
         //     }, 500);
         // },
+    },
+    beforeRouteEnter (to, from, next) {
+        if(sessionStorage.getItem('user-type') != "ADMINISTRATOR"){
+          return next('/')
+        }
+        next();
     }
 };
 

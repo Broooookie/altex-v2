@@ -17,20 +17,24 @@ class CreateClientsTable extends Migration
             $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('nickname')->nullable();
             $table->string('role');
             $table->string('membership_level');
             $table->string('member_miner_level');
             $table->string('mobile_number');
             $table->string('email');
             $table->string('reciever_verification_code_account');
-            $table->string('withdraw_transfer_status');
-            $table->string('state');
+            $table->enum('withdraw_transfer_status', ['ALLOWED', 'NOT_ALLOWED']);
+            $table->enum('status', ['USABLE', 'FREEZE_ACCOUNT']);
             $table->string('referal_email')->nullable();
             $table->string('client_referal_id')->nullable();
-            $table->string('agree_to_contract_agreement');
+            $table->enum('agree_to_contract_agreement', ['YES', 'NO']);
             $table->string('registered_ip');
             $table->string('last_logined_ip')->nullable();
             $table->string('current_logined_ip')->nullable();
+            $table->string('registered_source')->nullable();
+            $table->string('number_of_logins')->default(0);
+            $table->string('queue')->nullable();
             $table->timestamps();
         });
     }

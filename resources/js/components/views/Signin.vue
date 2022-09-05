@@ -183,8 +183,8 @@ export default {
 
                         // Redirect user
                         if (user_type == "ADMINISTRATOR")
-                            this.$router.push("administrator/finance");
-                        else if (user_type == "HOSPITAL") {
+                            this.$router.push("administrator/customer-management");
+                        else if (user_type == "CLIENT") {
                             sessionStorage.setItem(
                                 "profile-id",
                                 response.data.hospital.id
