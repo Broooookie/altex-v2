@@ -47,7 +47,7 @@
             }"
         >
             <v-toolbar-title v-if="!userId" class="primary--text">
-                HOSPITAL TRACKER
+                Altex
             </v-toolbar-title>
             <v-toolbar-title v-else class="primary--text">
                 Hi {{ occupant.name }}!
@@ -76,7 +76,7 @@
                     text
                     @click="$vuetify.goTo(0)"
                 >
-                    <span class="mr-2">HOME</span>
+                    <span class="mr-2" style="color:rgba(248,217,75, 0.8)">HOME</span>
                 </v-btn>
 
                 <v-btn
@@ -86,7 +86,7 @@
                     text
                     to="/"
                 >
-                    <span class="mr-2">HOME</span>
+                    <span class="mr-2" style="color:rgba(248,217,75, 0.8)">HOME</span>
                 </v-btn>
 
                 <v-btn
@@ -103,18 +103,46 @@
                     id="no-background-hover"
                     text
                     v-if="!userId"
-                    to="/login"
+                    to="#about"
                 >
-                    <span class="mr-2">LOG-IN</span>
+                    <span class="mr-2" style="color:rgba(248,217,75, 0.8)">About</span>
+                </v-btn>
+
+                <v-btn
+                    :ripple="false"
+                    id="no-background-hover"
+                    text
+                    v-if="!userId"
+                    to="#company"
+                >
+                    <span class="mr-2" style="color:rgba(248,217,75, 0.8)">Company</span>
                 </v-btn>
                 <v-btn
                     :ripple="false"
                     id="no-background-hover"
                     text
                     v-if="!userId"
-                    to="/register"
+                    to="#team"
                 >
-                    <span class="mr-2">REGISTER</span>
+                    <span class="mr-2" style="color:rgba(248,217,75, 0.8)">Team</span>
+                </v-btn>
+                <v-btn
+                    :ripple="false"
+                    id="no-background-hover"
+                    text
+                    v-if="!userId"
+                    to="#agency"
+                >
+                    <span class="mr-2" style="color:rgba(248,217,75, 0.8)">Agency</span>
+                </v-btn>
+                <v-btn
+                    :ripple="false"
+                    id="no-background-hover"
+                    text
+                    v-if="!userId"
+                    to="#advisory"
+                >
+                    <span class="mr-2" style="color:rgba(248,217,75, 0.8)">Advisory</span>
                 </v-btn>
             </div>
         </v-app-bar>
@@ -146,7 +174,7 @@
 
 #no-background-hover span:hover,
 #no-background-hover span:focus {
-    color: #00695c !important;
+    color: #f8d94b !important;
 }
 
 #btn-signup {

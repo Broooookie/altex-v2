@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Traits\Email;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class MailController extends Controller
 {
@@ -11,7 +13,7 @@ class MailController extends Controller
 
     public function send(Request $request) {
 
-        $validator = Validator::make($request->toArray(), [
+        $validator = FacadesValidator::make($request->toArray(), [
             'email' => 'required|email',
             'feedback' => 'required'
         ]);
@@ -34,4 +36,5 @@ class MailController extends Controller
         $this->sendEmail($template, $templateData, $subject);
 
         return response('Email Sent');
+}
 }

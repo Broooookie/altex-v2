@@ -33,15 +33,11 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             Route::get('/user', function() { return request()->user(); });
             Route::put('/user/change-password', 'UserController@changePassword');
 
-            Route::apiResource('hospitals', 'HospitalController');
-            Route::apiResource('occupants', 'OccupantController');
-            Route::apiResource('hospitalrooms', 'OccupantController');
-            Route::apiResource('roomrequests', 'RoomRequestController');
-            Route::apiResource('hospitals', 'HospitalController');
-            Route::apiResource('occupants', 'OccupantController');
-            Route::apiResource('hospitalrooms', 'HospitalRoomController');
-
             // Route::apiResource();
+            Route::get('offline-deposit-audit', 'ClientDepositController@depositAudit');
+            Route::get('offline-deposit-record', 'ClientDepositController@depositRecord');
+            Route::get('currency-transfer-review', 'ClientDepositController@depositRecord');
+            // Route::apiResource('hospitals', 'HospitalController');
 
         }
     );

@@ -6,10 +6,91 @@
         floating
         permanent
         mobile-breakpoint="991"
-        width="260"
+        width="350"
     >
-        <v-list dense>
+
+    <v-list>
+        <!-- Finance Center -->
+        <v-list-group
+          :value="false"
+          prepend-icon="mdi-account-circle"
+        >
+          <template v-slot:activator>
+            <v-list-item-title class="item-title">Finance Center</v-list-item-title>
+          </template>
+          <v-list-group
+          :value="false"
+          no-action
+          sub-group
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Recharge Management</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
             <v-list-item
+                    v-for="(link, i) in rechargeManagementLinks"
+                    :key="i"
+                    :to="link.to"
+                    active-class="primary"
+                    v-if="userPermission(link.module)"
+                    class="v-list-item">
+                    <v-list-item-action>
+                        <v-icon>{{ link.icon }}</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-title v-text="link.text" />
+                </v-list-item>
+        </v-list-group>
+        <v-list-group
+          :value="false"
+          no-action
+          sub-group
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Withdrawal Management</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+            <v-list-item
+                    v-for="(link, i) in withdrawalManagementLinks"
+                    :key="i"
+                    :to="link.to"
+                    active-class="primary"
+                    v-if="userPermission(link.module)"
+                    class="v-list-item">
+                    <v-list-item-action>
+                        <v-icon>{{ link.icon }}</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-title v-text="link.text" />
+                </v-list-item>
+        </v-list-group>
+        </v-list-group>
+
+        <!-- Customer Management -->
+        <v-list-group
+          :value="false"
+          prepend-icon="mdi-account-circle"
+        >
+          <template v-slot:activator>
+            <v-list-item-title class="item-title">Customer Management</v-list-item-title>
+          </template>
+            <v-list-item
+                    v-for="(link, i) in customerManagementLinks"
+                    :key="i"
+                    :to="link.to"
+                    active-class="primary"
+                    v-if="userPermission(link.module)"
+                    class="v-list-item">
+                    <v-list-item-action>
+                        <v-icon>{{ link.icon }}</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-title v-text="link.text" />
+                </v-list-item>
+    </v-list-group>
+      </v-list>  
+            <!-- <v-list-item
                 v-for="(link, i) in links"
                 :key="i"
                 :to="link.to"
@@ -22,7 +103,7 @@
                 </v-list-item-action>
                 <v-list-item-title v-text="link.text" />
             </v-list-item>
-        </v-list>
+    </v-list> -->
         <template v-slot:append>
             <v-list dense>
                 <v-list-item @click.stop="logout">
@@ -53,62 +134,73 @@ export default {
     },
     data: () => ({
         logo: "favicon.ico",
-        links: [
+        rechargeManagementLinks: [
             {
-                to: "/admin/dashboard",
-                icon: "mdi-view-dashboard",
-                text: "Dashboard",
-                module: "adminDashboard"
+                to: "/administrator/offline-deposit-audit",
+                icon: "mdi-chart-areaspline",
+                text: "Offline Deposit Audit",
+                module: "adminFinance"
             },
             {
-                to: "/admin/hospitals",
-                icon: "mdi-hospital-building",
-                text: "Hospitals",
-                module: "adminHospital"
-            },
-            // {
-            //     to: "/admin/hospital-rooms",
-            //     icon: "mdi-bed-empty",
-            //     text: "Rooms",
-            //     module: "adminRoom"
-            // },
-            {
-                to: "/admin/users",
-                icon: "mdi-account-circle",
-                text: "Occupants",
-                module: "adminUser"
+                to: "/administrator/offline-deposit-record",
+                icon: "mdi-chart-areaspline",
+                text: "Offline Deposit Record",
+                module: "adminFinance"
             },
             {
-                to: "/admin/room-requests",
-                icon: "mdi-bed",
-                text: "Room Requests",
-                module: "adminRequest"
-            },
-            //Hospital
-            {
-                to: "/hospital/dashboard",
-                icon: "mdi-view-dashboard",
-                text: "Dashboard",
-                module: "hospitalDashboard"
+                to: "/administrator/online-deposit-record",
+                icon: "mdi-chart-areaspline",
+                text: "Online Deposit Record",
+                module: "adminFinance"
             },
             {
-                to: "/hospital/rooms",
-                icon: "mdi-bed-empty",
-                text: "Rooms",
-                module: "hospitalRoom"
-            },
-            {
-                to: "/hospital/users",
-                icon: "mdi-account-circle",
-                text: "Occupants",
-                module: "hospitalUser"
-            },
-            {
-                to: "/hospital/room-requests",
-                icon: "mdi-bed",
-                text: "Room Requests",
-                module: "hospitalRequest"
+                to: "/administrator/currency-transfer-review",
+                icon: "mdi-chart-areaspline",
+                text: "Currency Transfer Review",
+                module: "adminFinance"
             }
+        ],
+
+        withdrawalManagementLinks: [
+            {
+                to: "/administrator/online-withdrawal-audit",
+                icon: "mdi-chart-areaspline",
+                text: "Online Withdrawal Audit",
+                module: "adminFinance"
+            },
+            {
+                to: "/administrator/user-withdrawal-record",
+                icon: "mdi-chart-areaspline",
+                text: "User Withdrawal Record",
+                module: "adminFinance"
+            },
+            {
+                to: "/administrator/quick-selling-record",
+                icon: "mdi-chart-areaspline",
+                text: "Quick Selling Record",
+                module: "adminFinance"
+            },
+            {
+                to: "/administrator/customer-withdrawal-statistics",
+                icon: "mdi-chart-areaspline",
+                text: "Customer Withdrawal Statistics",
+                module: "adminFinance"
+            }
+        ],
+
+        customerManagementLinks: [
+            {
+                to: "/administrator/customer-management",
+                icon: "mdi-chart-areaspline",
+                text: "Customer Management",
+                module: "adminFinance"
+            },
+            {
+                to: "/administrator/performance-statistics",
+                icon: "mdi-chart-areaspline",
+                text: "Performance Statistics",
+                module: "adminFinance"
+            },
         ],
         userRole: sessionStorage.getItem("user-type")
         // userRole: "HOSPITAL"
@@ -135,30 +227,14 @@ export default {
                 adminDashboard: true,
                 adminHospital: true,
                 adminUser: true,
-                adminRequest: true,
-                // adminRoom: true,
-                //hospital
-                // hospitalDashboard: true,
-                hospitalRoom: true,
-                hospitalUser: true,
-                hospitalRequest: true
+                adminFinance: true,
             };
             var permissions = {
                 ADMINISTRATOR: {
                     ...modules,
-                    hospitalDashboard: false,
-                    hospitalRequest: false,
-                    hospitalRoom: false,
-                    hospitalUser: false
+                    adminFinance: true,
                 },
-                HOSPITAL: {
-                    ...modules,
-                    adminRequest: false,
-                    adminDashboard: false,
-                    adminHospital: false,
-                    adminUser: false,
-                    adminRoom: false
-                }
+                
             };
             return permissions[this.userRole][module];
         },
@@ -193,10 +269,16 @@ export default {
         &--buy {
             margin-top: auto;
             margin-bottom: 17px;
+            color:#1f7b70;
         }
     }
 
-    .v-list .v-list-item--active {
+    .v-list-item{
+        color: black !important;
+    }
+
+     .v-list-item--active {
+        background-color: #1f7b70;
         color: white !important;
     }
 }

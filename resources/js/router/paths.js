@@ -1,68 +1,35 @@
 import Landing from "../components/views/Landing.vue";
 import Signin from "../components/views/Signin.vue";
 import Signup from "../components/views/Signup.vue";
-
-//Admin
-import AdminScaffold from "../components/views/admin/Scaffold.vue";
-import AdminDashboard from "../components/views/admin/Dashboard.vue";
-import AdminHospitals from "../components/views/admin/Hospital.vue";
-import AdminRooms from "../components/views/admin/Room.vue";
-import AdminUsers from "../components/views/admin/User.vue";
-import AdminRequests from "../components/views/admin/Request.vue";
-
-//Hospital
-import Scaffold from "../components/views/hospital/Scaffold.vue";
-import HospitalDashboard from "../components/views/hospital/Dashboard.vue";
-import HospitalRooms from "../components/views/hospital/Room.vue";
-import HospitalUsers from "../components/views/hospital/User.vue";
-import HospitalRequests from "../components/views/hospital/Request.vue";
-
-// Pusher Component
 import Pusher from '../components/views/Pusher.vue';
 
-//Admin Routes
+import AdminScaffold from '../components/views/Administrator/Scaffold.vue'
+import AdminOfflineDepositAudit from '../components/views/Administrator/RechargeManagement/OfflineDepositAudit.vue'
+import AdminOfflineDepositRecord from '../components/views/Administrator/RechargeManagement/OfflineDepositRecord.vue'
+import AdminCurrencyTransferReview from '../components/views/Administrator/RechargeManagement/CurrencyTransferReview.vue'
+import AdminOnlineDepositRecord from '../components/views/Administrator/RechargeManagement/OnlineDepositRecord.vue'
+import AdminCustomerManagement from '../components/views/Administrator/CustomerManagement/CustomerManagement.vue'
+import AdminPerformanceStatistics from '../components/views/Administrator/RechargeManagement/OnlineDepositRecord.vue'
+
+
+
+
 let adminRoutes = {
-  path: "/admin",
+  path: "/admin", 
   component: AdminScaffold,
-  redirect: "/admin/hospitals",
+  redirect: "/administrator",
   name: "Components",
   children: [
     // { path: "purchase-histories", name: "Purchase Histories", components: { default: PurchaseHistory }},
-    { path: "/admin/dashboard", name: "Dashboard", components: { default: AdminDashboard }},
-    { path: "/admin/hospitals", name: "Hospitals", components: { default: AdminHospitals }},
-    { path: "/admin/hospital-rooms", name: "Rooms", components: { default: AdminRooms }},
-    { path: "/admin/room-requests", name: "Requests", components: { default: AdminRequests }},
-    { path: "/admin/users", name: "Users", components: { default: AdminUsers }},
+    { path: "/administrator/offline-deposit-audit", name: "offline-deposit-audit", components: { default: AdminOfflineDepositAudit }},
+    { path: "/administrator/offline-deposit-record", name: "offline-deposit-record", components: { default: AdminOfflineDepositRecord }},
+    { path: "/administrator/currency-transfer-review", name: "currency-transfer-review", components: { default: AdminCurrencyTransferReview }},
+    { path: "/administrator/online-deposit-record", name: "online-deposit-record", components: { default: AdminOnlineDepositRecord }},
+    { path: "/administrator/customer-management", name: "customer-management", components: { default: AdminCustomerManagement }},
+    { path: "/administrator/performance-statistics", name: "performance-task", components: { default: AdminPerformanceStatistics }},
+    
   ]
 };
-
-//Admin Routes
-let hospitalRoutes = {
-  path: "/hospital",
-  component: AdminScaffold,
-  redirect: "/hospital/dashboard",
-  name: "Components",
-  children: [
-    // { path: "purchase-histories", name: "Purchase Histories", components: { default: PurchaseHistory }},
-    { path: "/hospital/dashboard", name: "Dashboard", components: { default: HospitalDashboard }},
-    { path: "/hospital/rooms", name: "Rooms", components: { default: HospitalRooms }},
-    { path: "/hospital/users", name: "Users", components: { default: HospitalUsers }},
-    { path: "/hospital/room-requests", name: "Requests", components: { default: HospitalRequests }},
-
-  ]
-};
-
-//Subscriber Routes
-let subsriberRoutes = {
-    path: "/",
-    component: Scaffold,
-    redirect: "/dashboard",
-    name: "Components",
-    children: [
-    //   { path: "/dashboard", name: "Dashboard", components: { default: Dashboard }},
-    //   { path: "/contacts", name: "Contacts", components: { default: Contact }},
-    ]
-  };
 
 const routes = [
   {
@@ -80,8 +47,6 @@ const routes = [
     name: "Signup",
     component: Signup,
   },
-  adminRoutes,
-  hospitalRoutes,
 //   subsriberRoutes,
 
   // Sample Route For Pusher
@@ -89,7 +54,8 @@ const routes = [
       path: "/pusher",
       name: "Pusher",
       component: Pusher
-  }
+  }, 
+  adminRoutes,
 ];
 
 export default routes;

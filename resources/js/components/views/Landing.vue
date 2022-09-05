@@ -1,9 +1,9 @@
 <template>
-    <v-app>
+    <v-app >
         <views-navigation :color="color" :flat="flat" />
         <div>
             <!-- ======= Hero Section ======= -->
-            <section class="hero-section" id="hero" v-if="!userId">
+            <section style="background-color:#1f2630" class="hero-section" id="hero"  v-if="!userId">
                 <v-container>
                     <v-row justify="center" class="align-items-center">
                         <v-col cols="12" xl="8" class="hero-text-image">
@@ -13,17 +13,27 @@
                                     lg="6"
                                     class="text-center text-lg-left"
                                 >
-                                    <h1 data-aos="fade-right">
-                                        HOSPITAL <strong>TRACKER</strong>
+                                    <h1 data-aos="fade-right" style="margin-top:50px" >
+                                        <strong style="color:white">Alt</strong><strong style="color:rgba(248,217,75, 0.8)">Ex</strong>
                                     </h1>
                                     <p
                                         class="mb-5"
                                         data-aos="fade-right"
                                         data-aos-delay="100"
+                                        style="color:white"
+                                        
                                     >
-                                        Discover the closest hospital near you.
+                                        {{myJson.tagline}}
                                     </p>
-                                    <!-- <v-btn data-aos="fade-right" data-aos-delay="200" data-aos-offset="-500" color="primary" size="100px" rounded x-large class="btn-primary">START THE TEST</v-btn> -->
+                                    <p
+                                        class="mb-5"
+                                        data-aos="fade-right"
+                                        data-aos-delay="100"
+                                        style="color:white"
+                                    >
+                                    {{myJson.getItNow}}
+                                    </p>
+                                    <!-- <v-btn data-aos="fade-right" data-aos-delay="200" data-aos-offset="-500" color="primary" size="100px" rounded x-large class="btn-primary"></v-btn> -->
                                     <p
                                         data-aos="fade-right"
                                         data-aos-delay="200"
@@ -31,17 +41,25 @@
                                     >
                                         <a
                                             class="btn btn-started"
-                                            @click="$vuetify.goTo('#search')"
-                                            >GET STARTED</a
+                                            data-aos="fade-up"
+                                            style="color:white; background-color:#00a170"
+                                            @click="$router.push('/#')"
+                                            >Google Play</a
+                                        >
+                                        <a
+                                            style="color:white; background-color:#0883fe"
+                                            class="btn btn-started"
+                                            href="https://dl.altexc.com/"
+                                            >App Store</a
                                         >
                                     </p>
                                 </v-col>
                                 <v-col
                                     cols="12"
                                     lg="6"
-                                    class="hidden-md-and-down"
-                                >
-                                    <img
+                                    class="hidden-md-and-down" >        
+                                        <img
+                                        width="100%"
                                         src="svg/Hero.svg"
                                         alt="Image"
                                         data-aos="fade-right"
@@ -53,77 +71,631 @@
                 </v-container>
             </section>
             <!-- End Hero -->
-            <!-- ======= Hero Section ======= -->
-            <section class="search-section" id="search" v-else>
+
+            <section style="background-color:#1f2630" id="about"  v-if="!userId">
                 <v-container>
-                    <v-row justify="center">
-                        <v-col cols="12">
-                            <GmapMap
-                                style="width: 100%; height: 800px;"
-                                :zoom="16"
-                                :center="center"
-                            >
-                                <GmapMarker
-                                    :position="address"
-                                    icon="https://res.cloudinary.com/mactimestwo/image/upload/v1630609205/person_ssy7uc.ico"
-                                />
-                                <GmapMarker
-                                    v-for="latlng in hospitalsLatLng"
-                                    :key="latlng.id"
-                                    :position="latlng"
-                                    :clickable="true"
-                                    @click="showHospital(latlng.id)"
-                                    icon="https://res.cloudinary.com/mactimestwo/image/upload/v1630607746/marker_mqvzre.ico"
-                                />
-                            </GmapMap>
+                    <v-row justify="center" class="align-items-center">
+                        <v-row>
+                        <center><h3 justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8)">{{myJson.aboutTitle}}</h3>
+                        <br><span style="color:white">{{myJson.about_tagline}}</span></center>
+                            <v-col style="margin-left:10%">
+                            <img style="margin-top:40px"
+                                        width="100%"
+                                        src="svg/btc.svg"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </v-col>
+                        <v-col cols="12" md="6" style="color:white; ">
+                                <v-row style="margin-top:40px">  
+                                    <v-col cols="12" md="3">
+                                        <img
+                                        width="50%"
+                                        src="svg/globe.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                                    </v-col>
+                                    <v-col cols="12" md="9" >
+                                        <span>{{myJson.about_description_1}}</span>
+                                    </v-col>
+                                    <v-col cols="12" md="3">
+                                        <img
+                                        width="50%"
+                                        src="svg/gem.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    >
+                                    </v-col>
+                                    <v-col cols="12" md="9">
+                                        <span>{{myJson.about_description_2}}</span>
+                                    </v-col>
+                                    <v-col cols="12" md="3">
+                                        <img
+                                        width="50%"
+                                        src="svg/networking.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                                    </v-col>
+                                    <v-col cols="12" md="9">
+                                        <span>{{myJson.about_description_3}}</span>
+                                    </v-col>
+                                </v-row>
+                        </v-col>
+                        </v-row>
+                    </v-row>
+                
+                </v-container>
+
+            </section>
+
+            <section style="background-color:#1f2630" id="about"  v-if="!userId">
+                <v-container>
+                    <v-row justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8); ">
+                        <v-row style="margin-bottom:50px">
+                        <center><h3 justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8); ">{{myJson.about_title_2}}</h3>
+                        <br><span style="color:white"></span></center>
+                            <v-col style="color:white;">
+                                <v-row>  
+                                    <v-col cols="12" md="3">
+                                        <img
+                                        width="50%"
+                                        src="svg/computer.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                                    </v-col>
+                                    <v-col cols="12" md="9">
+                                            <h4 style="color:rgba(248,217,75, 0.8)">{{myJson.about_safety}}</h4>
+                                            <span><br/>{{myJson.about_safety_desc_1}}
+                                                <br/>{{myJson.about_safety_desc_2}}
+                                                <br/>{{myJson.about_safety_desc_3}}
+                                                <br/>{{myJson.about_safety_desc_4}}</span>
+                                    </v-col>
+                                    <v-col cols="12" md="3">
+                                        <img
+                                        width="50%"
+                                        src="svg/bitcoin.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    >
+                                    </v-col>
+                                    <v-col cols="12" md="9">
+                                        <h4 style="color:rgba(248,217,75, 0.8)">{{myJson.about_globalization}}</h4>
+                                        <span><br/>{{myJson.about_globalization_desc_1}}
+                                               <br/>{{myJson.about_globalization_desc_2}}</span>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                                <v-col cols="12" md="6" style="color:white;" >
+                                <v-row>
+                                
+                                    <v-col cols="12" md="3">
+                                        <img
+                                        width="50%"
+                                        src="svg/computer.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                                    </v-col>
+                                    <v-col cols="12" md="9">
+                                        <h4 style="color:rgba(248,217,75, 0.8);">{{myJson.about_high_concurrency}}</h4>
+                                        <span>{{myJson.about_high_concurrency_desc_1}}
+                                            <br/>{{myJson.about_high_concurrency_desc_2}}
+                                            <br/>{{myJson.about_high_concurrency_desc_3}}</span>
+                                    </v-col>
+                                    <v-col cols="12" md="3" style="margin-top:80px">
+                                        <img
+                                        width="100px"
+                                        src="svg/saving-money.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    >
+                                    </v-col>
+                                    <v-col cols="12" md="9">
+                                    <h4 style="color:rgba(248,217,75, 0.8); margin-top:80px">{{myJson.about_saving_money}}</h4>
+                                        <span><br/>{{myJson.about_saving_money_desc_1}}
+                                                <br/>{{myJson.about_saving_money_desc_2}}
+                                                <br/>{{myJson.about_saving_money_desc_3}}</span>
+                                    </v-col>
+                                </v-row>
+                        </v-col>
+                        </v-row>
+                    </v-row>      
+                </v-container>
+            </section>
+
+            <section style="background-color:#1f2630" id="about"  v-if="!userId">
+                <v-container>                   
+                    <v-row justify="center" class="align-items-center">
+                        <v-col style="margin-left:10%">
+                            <img
+                                        width="80%"
+                                        src="svg/about.svg"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </v-col>
+                        <v-col cols="12" md="6" style="color:white">
+                        <center><h3 style="margin-bottom:10px;color:rgba(248,217,75, 0.8)">{{myJson.about_us}}</h3></center> 
+                                <v-row>  
+                                    <span style="font-size:1em;margin-bottom:10px">
+                                     {{myJson.about_us_desc}}</span>
+                                </v-row>
                         </v-col>
                     </v-row>
                 </v-container>
+
             </section>
+            <!-- ======= Hero Section ======= -->
+             <section style="background-color:#1f2630" id="company"  v-if="!userId">
+                <v-container>                   
+                    <v-row justify="center" class="align-items-center">      
+                        <v-col cols="12" md="6" style="color:white">
+                        <center><h3 style="margin-bottom:10px;color:rgba(248,217,75, 0.8)">{{myJson.about_company}}</h3></center> 
+                                <v-row>  
+                                    <v-col cols="12" md="6" style="margin-top:20px">  
+                                        <ul style="margin-left:25%;color:white">
+                                        <li><h5 style="color:white">{{myJson.about_company_1}}</h5>
+                                        </li>                                        
+                                        <li><h5 style="color:white">{{myJson.about_company_2}}</h5>
+                                        </li>
+                                        <li><h5 style="color:white">{{myJson.about_company_3}}</h5>
+                                        </li>   
+                                    </ul>  
+                                    </v-col>
+                                    <v-col cols="12" md="6" style="margin-top:20px">
+                                        
+                                        <ul style="margin-left:25%">
+                                        <li><h5 style="color:white">{{myJson.about_company_4}}</h5>
+                                        </li>
+                                        <li><h5 style="color:white">{{myJson.about_company_5}}</h5>
+                                        </li>
+                                        <li><h5 style="color:white">{{myJson.about_company_6}}</h5>
+                                        </li>
+                                    </ul>        
+                                    </v-col>
+                                </v-row>
+                        </v-col>
+                        <v-col style="margin-left:10%;margin-bottom:20px">
+                            <img
+                                        width="60%"
+                                        src="svg/company.svg"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </v-col >
+
+                        <v-row justify="center" class="align-items-center">
+                        <v-row>
+                        <center><h3 justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8);">Altex Timeline</h3>
+                        </center>   
+                            <v-col>
+                            <center>
+                                    <v-stepper value="7" style="background-color:#1f2630; color:white">
+                                        <v-stepper-header>
+                                        <v-stepper-step
+                                            step="1"
+                                            complete
+                                        >
+                                            <span style=" color:white">2015.05</span>
+                                            <small style="color:rgba(248,217,75, 0.8)">{{myJson.about_timeline_1}}</small>
+                                        </v-stepper-step>
+
+                                        <v-divider></v-divider>
+
+                                        <v-stepper-step step="2" complete>
+                                            <span style=" color:white">2016.02</span>
+                                            <small style="color:rgba(248,217,75, 0.8)">{{myJson.about_timeline_2}}</small>
+                                        </v-stepper-step>
+                                        <v-divider></v-divider>
+                                        <v-stepper-step step="3" complete>
+                                            <span style="color:white">2017.03</span>
+                                            <small style="color:rgba(248,217,75, 0.8)">{{myJson.about_timeline_3}}</small>
+                                        </v-stepper-step>
+                                        <v-divider></v-divider>
+                                        <v-stepper-step step="4" complete>
+                                            <span style=" color:white">2018.02</span>
+                                            <small style="color:rgba(248,217,75, 0.8)">{{myJson.about_timeline_4}}</small>
+                                        </v-stepper-step>
+                                        <v-divider></v-divider>
+                                        <v-stepper-step step="5" complete>
+                                            <span style=" color:white">2019.08</span>
+                                            <small style="color:rgba(248,217,75, 0.8)">{{myJson.about_timeline_5}}</small>
+                                        </v-stepper-step>
+                                        <v-divider></v-divider>
+                                        <v-stepper-step step="6" complete>
+                                            <span style=" color:white">2020.12</span>
+                                            <small style="color:rgba(248,217,75, 0.8)">{{myJson.about_timeline_6}}</small>
+                                        </v-stepper-step>
+                                        <v-divider></v-divider>
+                                        <v-stepper-step step="7" complete>
+                                           <span style=" color:white">2021.12</span>
+                                           <small style="color:rgba(248,217,75, 0.8)">{{myJson.about_timeline_7}}</small>
+                                        </v-stepper-step>
+                                        </v-stepper-header>
+                                    </v-stepper>
+                            </center>
+                                
+                        </v-col>
+                        
+                        
+                        </v-row>
+                    
+                        
+                    </v-row>
+                    </v-row>
+                </v-container>
+            </section>
+
+            <section style="background-color:#1f2630" class="hero-section" id="team"  v-if="!userId">
+                <v-container>
+                    <v-row justify="center" class="align-items-center">
+                        <v-row>
+                        <center><h3 justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8)">{{myJson.meet_the_team}}</h3>
+                        <br><span style="color:rgba(248,217,75, 0.8)">{{myJson.meet_the_team_founders}}</span></center>
+                        <v-col ></v-col>
+                        
+                        <v-col >
+                        <center>
+                            <v-card
+                                            
+                                            max-width="240"
+                                            max-height="0"
+                                            color="#1f2630"
+                                        >
+                                            <v-img
+                                            src="svg/1st.svg"
+                                            height="20%"
+                                            ></v-img>
+                            </v-card>
+                        </center>
+                        </v-col>
+                        <v-col  style="color:white; ">
+                        <center>
+                            <v-card
+                                           max-width="240"
+                                            max-height="0"
+                                            color="#1f2630"
+                                        >
+                                            <v-img
+                                            src="svg/2nd.svg"
+                                            height="20%"
+                                            ></v-img>
+                            </v-card>
+                        </center>      
+                        </v-col>
+                        <v-col >
+                                <v-card
+                                            class="mx-auto"
+                                            max-width="240"
+                                            max-height="0"
+                                            color="#1f2630"
+                                        >
+                                            <v-img
+                                            src="svg/3rd.svg"
+                                            height="20%"
+                                            ></v-img>
+                            </v-card>
+                        </v-col>
+                        <v-col></v-col>
+                        </v-row>
+                        <v-row>
+                        <v-col ></v-col>
+                        </v-row>
+                    </v-row>
+                
+                </v-container>
+
+            </section>
+
+            <section style="background-color:#1f2630" class="hero-section" id="team"  v-if="!userId">
+                <v-container>
+                    <v-row justify="center" class="align-items-center">
+                        <v-row>
+                        <center><h3 justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8)">{{myJson.meet_the_team}}</h3>
+                        <br><span style="color:rgba(248,217,75, 0.8)">{{myJson.meet_the_team_developers}}</span></center>
+                        <v-col cols="12" md="3">
+                        <v-card
+                                            class="mx-auto"
+                                            max-width="240"
+                                            max-height="0"
+                                            color="#1f2630"
+                                        >
+                                            <v-img
+                                            src="svg/4th.svg"
+                                            height="20%"
+                                            ></v-img>
+                            </v-card>
+                            </v-col>
+                        <v-col cols="12" md="3">
+                            <v-card
+                                            class="mx-auto"
+                                                max-width="240"
+                                                max-height="0"
+                                            color="#1f2630"
+                                        >
+                                            <v-img
+                                            src="svg/5th.svg"
+                                            height="20%"
+                                            ></v-img>
+                            </v-card>
+                        </v-col>
+                        <v-col  style="color:white; " cols="12" md="3">
+                                <v-card
+                                            class="mx-auto"
+                                                max-width="240"
+                                                max-height="0"
+                                            color="#1f2630"
+                                        >
+                                            <v-img
+                                            src="svg/6th.svg"
+                                            height="20%"
+                                            ></v-img>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                                <v-card
+                                            class="mx-auto"
+                                                max-width="240"
+                                                max-height="0"
+                                            color="#1f2630"
+                                        >
+                                            <v-img
+                                            src="svg/7th.svg"
+                                            height="20%"
+                                            ></v-img>
+                            </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-row>
+                
+                </v-container>
+
+            </section>
+
+            <section style="background-color:#1f2630" class="hero-section" id="agency"  v-if="!userId">
+                <v-container>
+                    <v-row justify="center" class="align-items-center">
+                    
+                        <v-row>
+
+                        <center><h3 justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8)">{{myJson.cooperative_agency}}</h3>
+                        </center>   
+                        <v-col></v-col>
+                            <v-col>
+                            <center>
+                                <img
+                                        width="120%"
+                                        src="svg/partner-md-a.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                            </center>
+                                
+                        </v-col>
+                        <v-col style="color:white; ">
+                            <center>
+                            <img
+                                        width="120%"
+                                        src="svg/partner-md-b.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />   
+                                    </center>
+                              
+                        </v-col>
+                        <v-col>
+                        <center>
+                            <img
+                                        width="120%"
+                                        src="svg/partner-md-c.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                 
+                        </v-col>
+
+                        <v-col >
+                            <center>
+                                <img
+                                        width="120%"
+                                        src="svg/partner-md-d.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                            </center>
+                                 
+                        </v-col>
+                        <v-col cols="12" md="2">
+                        <center>
+                            <img
+                                        width="120%"
+                                        src="svg/partner-md-e.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                
+                        </v-col>
+                        <v-col cols="12" md="2">
+                        <center>
+                            <img
+                                        width="200%"
+                                        src="svg/logo-5th.svg"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                
+                        </v-col>
+                        </v-row>
+                        
+
+                         
+                    </v-row>
+                </v-container> 
+
+                
+            </section>
+
+            <section style="background-color:#1f2630" class="hero-section" id="agency"  v-if="!userId">
+                <v-container>
+                    <v-row justify="center" class="align-items-center">         
+                        <v-row>
+                        <center><h3 justify="center" class="align-items-center" style="color:rgba(248,217,75, 0.8)" >{{myJson.advisory_body}}</h3>
+                        <br></center>
+                        
+                        <v-col cols="12" md="2" style="color:white; ">
+                        <center>
+                            <img
+                                        width="50%"
+                                        src="svg/partner-sm-a.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />   
+                        </center>
+                              
+                        </v-col>
+                        
+                        
+                        <v-col cols="12" md="2">
+                        <center>
+                            <img
+                                        width="50%"
+                                        src="svg/partner-sm-b.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                 
+                        </v-col>
+
+                        <v-col cols="12" md="2" lg="2">
+                        <center>
+                        <img
+                                        width="50%"
+                                        src="svg/partner-sm-c.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                 
+                        </v-col>
+                        <v-col cols="12" md="2">
+                         <center>
+                         <img
+                                        width="50%"
+                                        src="svg/partner-sm-d.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                
+                        </v-col>
+                        <v-col cols="12" md="2" style="color:white; ">
+                        <center>
+                            <img
+                                        width="50%"
+                                        src="svg/partner-xs-a.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    /> 
+                        </center>
+                                
+                        </v-col>
+                        <v-col cols="12" md="2">
+                        <center>
+                            <img
+                                        width="50%"
+                                        src="svg/partner-xs-b.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                 
+                        </v-col>
+                        <v-col cols="12" md="2">
+                        
+                        </v-col>
+
+                        <v-col cols="12" md="2">
+                            <center>
+                                <img
+                                        width="50%"
+                                        src="svg/partner-xs-c.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                            </center>
+                                 
+                        </v-col>
+                        <v-col cols="12" md="2">
+                        <center>
+                                <img
+                                        width="50%"
+                                        src="svg/partner-xs-d.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                                </center>
+                        </v-col>
+                        <v-col cols="12" md="2" style="color:white; ">
+                        <center>
+                            <img
+                                        width="50%"
+                                        src="svg/partner-xs-e.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                        </v-col>
+                        <v-col cols="12" md="2">
+                        <center>
+                            <img
+                                        width="50%"
+                                        src="svg/partner-xs-f.png"
+                                        alt="Image"
+                                        data-aos="fade-right"
+                                    />
+                        </center>
+                                 
+                        </v-col>
+                        </v-row>
+
+                    </v-row>
+                </v-container> 
+
+                
+            </section>
+
+            <v-footer style="background-color:#1f2630;" padless>
+                <v-col
+                class="text-center"
+                style="color:white"
+                >
+                {{ new Date().getFullYear() }} — <strong style="color:white">Altex</strong>
+                </v-col>
+                <v-col cols="12" md="3">
+                    <a @click="$router.push('privacy-policy')" style="color:rgba(248,217,75, 0.8)">{{myJson.privacy_policy}}</a>
+                </v-col> 
+                  
+            </v-footer>
+
+            
+
+            
+
+            
+
+            
+            <!-- ======= Hero Section ======= -->
             <!-- End Hero -->
+            
+            
         </div>
-        <v-dialog v-model="hospitalDialog" max-width="400px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">Hospital Information</span>
-                    <v-spacer />
-                    <v-icon
-                        large
-                        color="primary"
-                        @click="hospitalDialog = false"
-                        >mdi-times</v-icon
-                    >
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col>Name:</v-col>
-                            <v-col class="text-left">{{ hospital.name }}</v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>Address:</v-col>
-                            <v-col class="text-left">{{
-                                hospital.address
-                            }}</v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>Contact:</v-col>
-                            <v-col class="text-left">{{
-                                hospital.number
-                            }}</v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>Status:</v-col>
-                            <v-col class="text-left"
-                                ><v-chip :color="chipColor(hospital.status)">{{
-                                    hospital.status
-                                }}</v-chip></v-col
-                            >
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
         <v-scale-transition>
             <v-btn
                 fab
@@ -143,6 +715,15 @@
 </template>
 
 <script>
+
+import enJson from './language/en.json'
+import jpJson from './language/japan.json'
+import spJson from './language/spanish.json'
+import thaiJson from './language/thai.json'
+import vietJson from './language/viet.json'
+
+
+
 export default {
     name: "app",
     data() {
@@ -151,26 +732,7 @@ export default {
             userId: sessionStorage.getItem("user-id"),
             color: "",
             flat: null,
-            hospital: { id: 1025167, lat: 6.9214, lng: 122.075 },
-            hospitals: [
-                { id: 1025167, lat: 6.9214, lng: 122.075 },
-                { id: 1025168, lat: 6.9225, lng: 122.0771 },
-                { id: 1025169, lat: 6.9246, lng: 122.0712 },
-                { id: 1025170, lat: 6.9237, lng: 122.0783 },
-                { id: 1025171, lat: 6.9258, lng: 122.0794 }
-            ],
-            hospitalsLatLng: [
-                { id: 1025167, lat: 6.9214, lng: 122.075 },
-                { id: 1025168, lat: 6.9225, lng: 122.0771 },
-                { id: 1025169, lat: 6.9246, lng: 122.0712 },
-                { id: 1025170, lat: 6.9237, lng: 122.0783 },
-                { id: 1025171, lat: 6.9258, lng: 122.0794 }
-            ],
-            //Google Maps Variables
-            center: { lat: 6.9214, lng: 122.079 },
-            address: { lat: 6.9214, lng: 122.079 },
-            //Modals
-            hospitalDialog: false
+            myJson: {},
         };
     },
 
@@ -267,25 +829,25 @@ export default {
     },
 
     created() {
-        this.toTop();
-        const top = window.pageYOffset || 0;
-        if (top <= 60) {
-            this.color = "transparent";
-            this.flat = true;
+        if(sessionStorage.getItem("language") == 'jp')
+        {
+            this.myJson = jpJson
         }
-        this.getUserGeolocation();
-        this.fetchHospitals();
+        else if(sessionStorage.getItem("language") == 'thai')
+        {
+            this.myJson = thaiJson
+        }
+        else if(sessionStorage.getItem("language") == 'spanish')
+        {
+            this.myJson = spJson
+        }
+        else if(sessionStorage.getItem("langauge") == 'vietnam')
+        {
+            this.myJson = vietJson
+        }else
+        {
+            this.myJson = enJson
+        }
     },
-
-    beforeRouteEnter(to, from, next) {
-        // if (sessionStorage.getItem("user-type")) {
-        //     if (sessionStorage.getItem("user-type") == "ADMINISTRATOR") {
-        //         return next("admin/dashboard");
-        //     } else if (sessionStorage.getItem("user-type") == "SUBSCRIBER") {
-        //         return next("/dashboard");
-        //     }
-        // }
-        next();
-    }
 };
 </script>
