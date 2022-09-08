@@ -14,16 +14,18 @@ class CreateClientWithdrawsTable extends Migration
     public function up()
     {
         Schema::create('client_withdraws', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->uuid('client_wallet_id');
-            $table->foreign('client_wallet_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->bigIncrements('id');
+            $table->uuid('uid');
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->unsignedBigInteger('client_wallet_id');
+            $table->foreign('client_wallet_id')->references('id')->on('client_wallets')->onDelete('cascade');
             $table->string('bchain_name');
             $table->string('withdraw_address');
             $table->string('withdraw_amount');
             $table->string('miner_fee');
             $table->string('arrival_quantity');
-            $table->enum('state', ['PENDING', 'APPROVED', 'DISSAPROVED']);
+            $table->enum('state', ['ONHOLD', 'PROCEED', 'RETURN']);
             $table->string('application_time');
             $table->string('ip_address');
             $table->timestamps();

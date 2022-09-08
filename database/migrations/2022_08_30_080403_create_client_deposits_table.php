@@ -14,10 +14,11 @@ class CreateClientDepositsTable extends Migration
     public function up()
     {
         Schema::create('client_deposits', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('client_id');
+            $table->bigIncrements('id');
+            $table->uuid('uid');
+            $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->uuid('client_wallet_id');
+            $table->unsignedBigInteger('client_wallet_id');
             $table->foreign('client_wallet_id')->references('id')->on('client_wallets')->onDelete('cascade');
             $table->string('top_up_account');
             $table->double('recharge_amount');

@@ -18,7 +18,7 @@ class ClientWallet extends Model
 
     public function coin()
     {
-        return $this->belongsTo(Coin::class, 'coin_id', 'coin');
+        return $this->belongsTo(Coin::class, 'coin_id', 'id');
     }
 
     public function clientDeposits()

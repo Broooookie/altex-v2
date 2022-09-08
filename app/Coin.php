@@ -60,4 +60,9 @@ class Coin extends Model
     {
         return $this->belongsTo(ClientWallet::class);
     }
+
+    public function coinChartData()
+    {
+        return $this->belongsTo(CoinChartData::class);
+    }
 }

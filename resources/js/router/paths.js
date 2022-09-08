@@ -9,7 +9,7 @@ import AdminOfflineDepositRecord from '../components/views/Administrator/Recharg
 import AdminCurrencyTransferReview from '../components/views/Administrator/RechargeManagement/CurrencyTransferReview.vue'
 import AdminOnlineDepositRecord from '../components/views/Administrator/RechargeManagement/OnlineDepositRecord.vue'
 import AdminCustomerManagement from '../components/views/Administrator/CustomerManagement/CustomerManagement.vue'
-import AdminPerformanceStatistics from '../components/views/Administrator/RechargeManagement/OnlineDepositRecord.vue'
+import AdminPerformanceStatistics from '../components/views/Administrator/CustomerManagement/PerformanceStatistics.vue'
 
 import AdminCustomerWithdrawalStatistics from '../components/views/Administrator/WithdrawalManagement/CustomerWithdrawalStatistics.vue'
 import AdminWithdrawalAudit from '../components/views/Administrator/WithdrawalManagement/OnlineWithdrawalAudit.vue'
@@ -45,18 +45,18 @@ const routes = [
   {
     path: "/",
     name: "Landing",
-    component: Landing,
+    component: Signin,
   },
   {
     path: "/login",
     name: "Signin",
     component: Signin,
   },
-  {
-    path: "/register",
-    name: "Signup",
-    component: Signup,
-  },
+  // {
+  //   path: "/register",
+  //   name: "Signup",
+  //   component: Signup,
+  // },
 //   subsriberRoutes,
 
   // Sample Route For Pusher

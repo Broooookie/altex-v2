@@ -23,11 +23,11 @@ class ClientWalletController extends Controller
         $auth = Auth::user();
         if($auth->role =='ADMINISTRATOR')
         {
-            $client = Client::with('clientWallets')->get();
+            $client = ClientWallet::where('client_id', $request->input('client_id'))->with('client','coin')->get();
 
             return response()->json(
                 [
-                    'client' => $client
+                    'assets' => $client
                 ]
             );
         }

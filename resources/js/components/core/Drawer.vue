@@ -104,8 +104,29 @@
                 <v-list-item-title v-text="link.text" />
             </v-list-item>
     </v-list> -->
+    
         <template v-slot:append>
             <v-list dense>
+                <v-list-group
+                        :value="false"
+                        prepend-icon="mdi-account-circle"
+                        >
+                        <template v-slot:activator>
+                            <v-list-item-title class="item-title">Settings</v-list-item-title>
+                        </template>
+                            <v-list-item
+                                    v-for="(link, i) in settingsLinks"
+                                    :key="i"
+                                    :to="link.to"
+                                    active-class="primary"
+                                    v-if="userPermission(link.module)"
+                                    class="v-list-item">
+                                    <v-list-item-action>
+                                        <v-icon>{{ link.icon }}</v-icon>
+                                    </v-list-item-action>
+                                    <v-list-item-title v-text="link.text" />
+                                </v-list-item>
+                    </v-list-group>
                 <v-list-item @click.stop="logout">
                     <v-list-item-action>
                         <v-icon>mdi-exit-to-app</v-icon>
@@ -202,6 +223,21 @@ export default {
                 module: "adminFinance"
             },
         ],
+
+        settingsLinks: [
+            {
+                to: "/administrator/customer-management",
+                icon: "mdi-chart-areaspline",
+                text: "Coins",
+                module: "adminSettingCoins"
+            },
+            {
+                to: "/administrator/performance-statistics",
+                icon: "mdi-chart-areaspline",
+                text: "Coin Pairs",
+                module: "adminSettingCoinPairs"
+            },
+        ],
         userRole: sessionStorage.getItem("user-type")
         // userRole: "HOSPITAL"
     }),
@@ -224,10 +260,9 @@ export default {
         ...mapMutations("app", ["setDrawer", "toggleDrawer"]),
         userPermission(module) {
             var modules = {
-                adminDashboard: true,
-                adminHospital: true,
-                adminUser: true,
                 adminFinance: true,
+                adminSettingCoinPairs: true,
+                adminSettingCoins: true,
             };
             var permissions = {
                 ADMINISTRATOR: {

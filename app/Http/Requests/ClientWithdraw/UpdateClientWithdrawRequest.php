@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ClientWithdraw;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateClientWithdrawRequest extends FormRequest
 {
@@ -32,11 +33,7 @@ class UpdateClientWithdrawRequest extends FormRequest
     {
         return [
             //
-            'bchain_name' => 'string',
-            'withdraw_address' => 'string',
-            'withdraw_amount' => 'string',
-            'miner_fee' => 'required',
-            'state' => 'string'
+            'status' => 'required'
         ];
     }
 }

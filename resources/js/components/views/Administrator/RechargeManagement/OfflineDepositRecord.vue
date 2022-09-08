@@ -46,12 +46,6 @@
                                 }}
                             </template>
                             <template v-slot:item.actions="{ item }">
-                                <v-btn icon @click="editDeposit(item)">
-                                    <v-icon>mdi-pencil</v-icon>
-                                </v-btn>
-                                <v-btn icon @click="deleteDeposit(item)">
-                                    <v-icon>mdi-delete</v-icon>
-                                </v-btn>
                             </template>
                         </v-data-table>
                     </v-container>
@@ -181,24 +175,20 @@ export default {
 
             tableOfflineDepositHeaders: [
                 { text: "Serial Number", value: "id" },
-                { text: "UID", value: "client.uid" },
-                { text: "Email", value: "email" },
-                { text: "Mobile Number", value: "mobile_number" },
-                { text: "Nickname", value: "nickname" },
-                { text: "Top-up Account", value: "" },
-                { text: "Recharge Amount", value: "" },
-                { text: "Included in Performance", value: "" },
-                { text: "Recharge Status", value: "" },
-                { text: "Account Type", value: "" },
-                { text: "IP Address", value: "" },
-                { text: "Submission Time", value: "" },
-                { text: "Response Time", value: "" },
-                {
-                    text: "Actions",
-                    value: "actions",
-                    sortable: false,
-                    align: "center"
-                }
+                { text: "UID", value: "client.id" },
+                { text: "Email", value: "client.email" },
+                { text: "Mobile Number", value: "client.mobile_number" },
+                { text: "Nickname", value: "client.nickname" },
+                { text: "Top-up Account", value: "top_up_account" },
+                { text: "Recharge Amount", value: "recharge_amount" },
+                { text: "Transaction Type", value: "transaction_type" },
+                { text: "Included in Performance", value: "included_in_performance" },
+                { text: "Recharge Status", value: "recharge_status" },
+                { text: "Account Type", value: "account_type" },
+                { text: "IP Address", value: "ip_address" },
+                { text: "Submission Time", value: "submission_time" },
+                { text: "Response Time", value: "response_time" },
+             
             ],
 
             editedDepositIndex: -1,
@@ -276,9 +266,13 @@ export default {
             this.tableLoading = true;
             this.componentOverlay = true;
             axios
-                .get("/api/v1/offline-deposit-record")
+                .get("/api/v1/deposits", {
+                    params: {
+                        status: 'APPROVED'
+                    }
+                })
                 .then(response => {
-                    this.tableDeposits = response.data.data;
+                    this.tableDeposits = response.data.clients;
                 })
                 .catch(error => {
                     console.log(error);

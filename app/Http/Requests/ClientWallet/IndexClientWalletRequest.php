@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ClientWallet;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class IndexClientWalletRequest extends FormRequest
 {

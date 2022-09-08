@@ -34,7 +34,7 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-
+<!-- 
         <v-app-bar
             app
             :color="color"
@@ -145,7 +145,7 @@
                     <span class="mr-2" style="color:rgba(248,217,75, 0.8)">Advisory</span>
                 </v-btn>
             </div>
-        </v-app-bar>
+        </v-app-bar> -->
     </div>
 </template>
 

@@ -14,8 +14,9 @@ class CreateClientWalletsTable extends Migration
     public function up()
     {
         Schema::create('client_wallets', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('client_id');
+            $table->bigIncrements('id');
+            $table->uuid('uid');
+            $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->uuid('coin_id');
             $table->foreign('coin_id')->references('id')->on('coins')->onDelete('cascade');

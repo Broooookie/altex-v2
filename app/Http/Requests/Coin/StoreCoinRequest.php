@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Coin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreCoinRequest extends FormRequest
 {

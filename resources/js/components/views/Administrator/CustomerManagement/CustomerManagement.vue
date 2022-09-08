@@ -49,7 +49,7 @@
                                 <v-btn icon @click="editCustomer(item)">
                                     <v-icon>mdi-pencil</v-icon>
                                 </v-btn>
-                                <v-btn icon @click="Assets(item)">
+                                <v-btn icon @click="fetchAssets(item)">
                                     <v-icon>mdi-bitcoin</v-icon>
                                 </v-btn>
                                 <v-btn icon @click="addRecharge(item)">
@@ -388,7 +388,7 @@
                                 :loading="tableLoading"
                                 loading-text="Fetching Customer Asset's list... Please wait"
                                 :headers="tableCustomerAssetsHeaders"
-                                :items="tableCustomers"
+                                :items="tableAssets"
                                 :search="tableSearch"
                             >
                                 <template v-slot:top>
@@ -419,18 +419,7 @@
                                     }}
                                 </template> -->
                                 <template v-slot:item.actions="{ item }">
-                                    <v-btn icon @click="editCustomer(item)">
-                                        <v-icon>mdi-pencil</v-icon>
-                                    </v-btn>
-                                    <v-btn icon @click="Assets(item)">
-                                        <v-icon>mdi-bitcoin</v-icon>
-                                    </v-btn>
-                                    <v-btn icon @click="addRecharge(item)">
-                                        <v-icon>mdi-cash</v-icon>
-                                    </v-btn>
-                                    <v-btn icon @click="deleteCustomer(item)">
-                                        <v-icon>mdi-delete</v-icon>
-                                    </v-btn>
+                                   
                                 </template>
                             </v-data-table>
                         </v-container>
@@ -460,6 +449,7 @@ export default {
             visible: false,
             tableCustomers: [],
             itemCoins: [],
+            tableAssets: [],
             formCustomerDialog: false,
             formRechargeDialog: false,
             formCustomerListDialog: false,
@@ -548,10 +538,11 @@ export default {
             ],
 
             tableCustomerAssetsHeaders: [
-                { text: "Role", value: "role" },
-                { text: "Email", value: "email" },
-                { text: "UID", value: "id" },
-                { text: "Currency", value: "coin_pair" },
+                { text: "Role", value: "client.role" },
+                { text: "Email", value: "client.email" },
+                { text: "UID", value: "client.id" },
+                { text: "Currency", value: "coin.name" },
+                { text: "Balance", value: "wallet_balance" },
                 { text: "Restricted Withdraw Amount", value: "restricted_with_withdraw_amount" },
                 { text: "Freeze", value: "freeze" },
                 { text: "Credit", value: "credit" },
@@ -684,10 +675,28 @@ export default {
                 });
         },
 
-        Assets()
+        fetchAssets(customer)
         {
-            this.formAssetsDialog = true;
+            this.editedCustomerIndex = this.tableCustomers.indexOf(customer);
+            this.editedCustomerInformation = Object.assign({}, customer);
+            axios
+                .get("/api/v1/wallets", {
+                    params: {
+                       client_id: this.editedCustomerInformation.id
+                    }
+                })
+                .then(response => {
+                    this.tableAssets = response.data.assets
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.componentOverlay = false;
+                    this.tableLoading = false;
+                });
 
+                this.formAssetsDialog = true
         },
 
         saveCustomer() {

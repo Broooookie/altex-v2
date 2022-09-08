@@ -14,10 +14,11 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('client_id');
+            $table->bigIncrements('id');
+            $table->uuid('uid');
+            $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->uuid('client_wallet_id');
+            $table->unsignedBigInteger('client_wallet_id');
             $table->foreign('client_wallet_id')->references('id')->on('client_wallets')->onDelete('cascade');
             $table->string('role');
             $table->enum('delegate_type', ['BUY', 'SELL']);

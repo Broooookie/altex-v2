@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientWallet;
 use App\ClientWithdraw;
+use App\Http\Requests\ClientWithdraw\IndexClientWithdrawRequest;
 use App\Http\Requests\ClientWithdraw\StoreClientWithdrawRequest;
+use App\Http\Requests\ClientWithdraw\UpdateClientWithdrawRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,16 +19,16 @@ class ClientWithdrawController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(IndexClientWithdrawRequest $request)
     {
         //
         $auth = Auth::user();
         if($auth->role == 'ADMINISTRATOR')
         {
-            $client = Client::with('clientWithdraws')->get();
+            $client = ClientWithdraw::where('state', $request->input('status'))->with('client')->get();
             return response()->json(
                 [
-                    'client' => $client
+                    'withdraw' => $client
                 ]
             );
         }
@@ -104,9 +107,39 @@ class ClientWithdrawController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateClientWithdrawRequest $request, ClientWithdraw $withdrawal)
     {
         //
+        $mytime = Carbon::now();
+        $withdraw = ClientWithdraw::where('id', $withdrawal->id)->first();
+
+        $withdraw->update([
+            'state' => $request->input('status'),
+            'application_time' => $mytime->toDateTimeString(),
+        ]);
+
+        if($request->input('status') == 'PROCEED')
+        {
+            return response()->json(
+                [
+                    'withdraw' => $withdraw
+                ]
+            );
+        }elseif($request->input('status') == 'RETURN')
+        {
+            $clientWallet = ClientWallet::where('client_id', $withdraw->client_id)->where('id', $withdraw->client_wallet_id)->first();
+            $totalWithdraw = $clientWallet->wallet_balance + $withdraw->withdraw_amount;
+
+            $clientWallet->update([
+                'wallet_balance' => $totalWithdraw
+            ]);
+
+            return response()->json(
+                [
+                    'withdraw' => $withdraw
+                ]
+            );
+        }
     }
 
     /**

@@ -13,20 +13,20 @@
                     <v-container>
                         <v-data-table
                             :loading="tableLoading"
-                            loading-text="Fetching certificates list... Please wait"
-                            :headers="tableTransferHeaders"
-                            :items="tableCurrencyTransfers"
+                            loading-text="Fetching withdrawal list... Please wait"
+                            :headers="tableOfflineWithdrawalHeaders"
+                            :items="tableWithdrawals"
                             :search="tableSearch"
                         >
                             <template v-slot:top>
                                 <v-toolbar flat>
                                     <v-toolbar-title class="headline"
-                                        >Currency Transfer Certificates</v-toolbar-title
+                                        >Online Withdrawal Audits</v-toolbar-title
                                     >
                                     <div class="flex-grow-1"></div>
                                     <!-- <v-btn
                                         small
-                                        @click="formTransferDialog = true"
+                                        @click="formWithdrawalDialog = true"
                                         color="primary"
                                     >
                                         <v-icon small left
@@ -38,7 +38,7 @@
                             </template>
                             <template v-slot:item.id="{ item }">
                                 {{
-                                    tableCurrencyTransfers
+                                    tableWithdrawals
                                         .map(function(x) {
                                             return x.id;
                                         })
@@ -46,11 +46,11 @@
                                 }}
                             </template>
                             <template v-slot:item.actions="{ item }">
-                                <v-btn icon @click="editTransfer(item)">
-                                    <v-icon>mdi-pencil</v-icon>
+                                <v-btn icon @click="approveWithdrawal(item)">
+                                    <v-icon color="primary">mdi-arrow-right-bold</v-icon>
                                 </v-btn>
-                                <v-btn icon @click="deleteTransfer(item)">
-                                    <v-icon>mdi-delete</v-icon>
+                                <v-btn icon @click="declineWithdrawal(item)">
+                                    <v-icon color="red">mdi-arrow-left-bold</v-icon>
                                 </v-btn>
                             </template>
                         </v-data-table>
@@ -58,7 +58,7 @@
                 </v-card>
             </v-col>
         </v-row>
-        <!-- <v-dialog v-model="formTransferDialog" max-width="800px" persistent>
+        <!-- <v-dialog v-model="formWithdrawalDialog" max-width="800px" persistent>
             <v-card>
                 <v-overlay :value="componentOverlay">
                     <v-progress-circular
@@ -68,7 +68,7 @@
                     ></v-progress-circular>
                 </v-overlay>
                 <v-card-title class="headline">
-                    {{ formTransferTitle }}
+                    {{ formWithdrawalTitle }}
                 </v-card-title>
                 <v-card-text>
                     <v-row justify="center">
@@ -76,10 +76,10 @@
                             <v-text-field
                                 type="text"
                                 :error-messages="
-                                    formTransferErrors.user.username
+                                    formWithdrawalErrors.user.username
                                 "
                                 v-model="
-                                    editedTransferInformation.user.username
+                                    editedWithdrawalInformation.user.username
                                 "
                                 label="Username"
                             />
@@ -87,7 +87,7 @@
                         <v-col cols="12" md="6">
                             <v-text-field
                                 v-model="
-                                    editedTransferInformation.user.password
+                                    editedWithdrawalInformation.user.password
                                 "
                                 label="Password"
                                 id="password"
@@ -107,31 +107,31 @@
                         <v-col cols="12" md="4">
                             <v-text-field
                                 type="text"
-                                :error-messages="formTransferErrors.name"
-                                v-model="editedTransferInformation.name"
+                                :error-messages="formWithdrawalErrors.name"
+                                v-model="editedWithdrawalInformation.name"
                                 label="Name"
                             />
                         </v-col>
                         <v-col cols="12" md="4">
                             <v-text-field
                                 type="text"
-                                :error-messages="formTransferErrors.number"
-                                v-model="editedTransferInformation.number"
+                                :error-messages="formWithdrawalErrors.number"
+                                v-model="editedWithdrawalInformation.number"
                                 label="Number"
                             />
                         </v-col>
                         <v-col cols="12" md="4">
                             <v-select
-                                :error-messages="formTransferErrors.status"
-                                v-model="editedTransferInformation.status"
+                                :error-messages="formWithdrawalErrors.status"
+                                v-model="editedWithdrawalInformation.status"
                                 label="Status"
                             />
                         </v-col>
                         <v-col cols="12">
                             <v-text-field
                                 type="text"
-                                :error-messages="formTransferErrors.address"
-                                v-model="editedTransferInformation.address"
+                                :error-messages="formWithdrawalErrors.address"
+                                v-model="editedWithdrawalInformation.address"
                                 label="Address"
                             />
                         </v-col>
@@ -144,10 +144,10 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn class="px-12" text @click="closeTransferForm"
+                    <v-btn class="px-12" text @click="closeWithdrawalForm"
                         >Cancel</v-btn
                     >
-                    <v-btn class="px-12" @click="saveTransfer" color="primary"
+                    <v-btn class="px-12" @click="saveWithdrawal" color="primary"
                         >Save</v-btn
                     >
                 </v-card-actions>
@@ -166,11 +166,11 @@ export default {
             tableSearch: null,
             searchInput: "",
             visible: false,
-            tableCurrencyTransfers: [],
-            formTransferDialog: false,
-            formTransferListDialog: false,
+            tableWithdrawals: [],
+            formWithdrawalDialog: false,
+            formWithdrawalListDialog: false,
 
-            formTransferErrors: {
+            formWithdrawalErrors: {
                 name: null,
                 address: null,
                 number: null,
@@ -179,17 +179,18 @@ export default {
                 lng: 122.079
             },
 
-            tableTransferHeaders: [
+            tableOfflineWithdrawalHeaders: [
                 { text: "Serial Number", value: "id" },
-                { text: "UID", value: "client.uid" },
-                { text: "Email", value: "email" },
-                { text: "Mobile Number", value: "mobile_number" },
-                { text: "State", value: "" },
-                { text: "Picture", value: "" },
-                { text: "Remarks", value: "" },
-                { text: "Upload Time", value: "" },
-                { text: "Handler", value: "" },
-                { text: "Processing Time", value: "" },
+                { text: "UID", value: "client.id" },
+                { text: "Email", value: "client.email" },
+                { text: "Mobile Number", value: "client.mobile_number" },
+                { text: "Chain Name", value: "bchain_name" },
+                { text: "Withdrawal Address", value: "withdraw_address" },
+                { text: "Withdrawal Amount", value: "withdraw_amount" },
+                { text: "Miner Fee", value: "miner_fee" },
+                { text: "Actual Arrival Quantity", value: "arrival_quantity" },
+                { text: "Status", value: "state" },
+                { text: "Application Time", value: "application_time" },
                 {
                     text: "Actions",
                     value: "actions",
@@ -198,8 +199,8 @@ export default {
                 }
             ],
 
-            editedTransferIndex: -1,
-            editedTransferInformation: {
+            editedWithdrawalIndex: -1,
+            editedWithdrawalInformation: {
                 name: null,
                 address: null,
                 number: null,
@@ -207,16 +208,13 @@ export default {
                 latitude: 6.9214,
                 longitude: 122.079
             },
-            defaultTransferInformation: {
+            defaultWithdrawalInformation: {
                 name: null,
                 address: null,
                 number: null,
                 user: { username: null, password: null },
-                latitude: 6.9214,
-                longitude: 122.079
             },
 
-            //Google Maps Variables
 
             rules: {
                 required: [
@@ -234,14 +232,14 @@ export default {
                         (!!v && v.length <= 255) ||
                         "E-mail must not be more than 255 characters"
                 ],
-                mobileRules: [
-                    v => !!v || "Mobile Number is required",
+                withdrawRules: [
+                    v => !!v || "Withdrawal Number is required",
                     v =>
                         (!!v && v.length >= 10) ||
-                        "Mobile Number must be 11 characters",
+                        "Withdrawal Number must be 11 characters",
                     v =>
                         (!!v && v.length < 11) ||
-                        "Mobile Number must not be more than 11 characters"
+                        "Withdrawal Number must not be more than 11 characters"
                 ],
                 passwordRules: [
                     v => !!v || "Password is required",
@@ -254,26 +252,30 @@ export default {
     },
 
     computed: {
-        formTransferTitle() {
-            return this.editedTransferIndex === -1
-                ? "New Transfer"
-                : "Edit Transfer";
+        formWithdrawalTitle() {
+            return this.editedWithdrawalIndex === -1
+                ? "New Withdrawal Audit"
+                : "Edit Withdrawal Audit";
         }
     },
 
     mounted() {
-        this.fetchCurrencyTransfers();
+        this.fetchWithdrawals();
     },
 
     methods: {
 
-        fetchCurrencyTransfers() {
+        fetchWithdrawals() {
             this.tableLoading = true;
             this.componentOverlay = true;
             axios
-                .get("/api/v1/offline-currency-transfer")
+                .get("/api/v1/withdrawals", {
+                    params: {
+                        status: 'ONHOLD'
+                    }
+                })
                 .then(response => {
-                    this.tableCurrencyTransfers = response.data.data;
+                    this.tableWithdrawals = response.data.withdraw;
                 })
                 .catch(error => {
                     console.log(error);
@@ -284,26 +286,97 @@ export default {
                 });
         },
 
-        saveTransfer() {
+        approveWithdrawal(withdraw)
+        {
+
+                this.editedWithdrawalIndex = this.tableWithdrawals.indexOf(withdraw);
+                this.editedWithdrawalInformation = Object.assign({}, withdraw);
+
+                
+            axios
+                .put("/api/v1/withdrawals/" + this.editedWithdrawalInformation.id, {
+                    status: 'PROCEED'
+                })
+                .then(response => {
+                    this.fetchWithdrawals();
+                    swal.fire({
+                        position: "top-end",
+                        toast: true,
+                        type: "success",
+                        icon: "success",
+                        text: "Successfully Proceeded",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+                .catch(error => {
+                    this.componentOverlay = false;
+
+                    if (error.response.status == 422) {
+                        this.formWithdrawalErrors = error.response.data.errors;
+                    } else {
+                        console.log(error);
+                    }
+                })
+                .finally(() => {});
+        },
+
+        declineWithdrawal(withdraw)
+        {
+
+                this.editedWithdrawalIndex = this.tableWithdrawals.indexOf(withdraw);
+                this.editedWithdrawalInformation = Object.assign({}, withdraw);
+
+                
+            axios
+                .put("/api/v1/withdrawals/" + this.editedWithdrawalInformation.id, {
+                    status: 'RETURN'
+                })
+                .then(response => {
+                    this.fetchWithdrawals();
+                    swal.fire({
+                        position: "top-end",
+                        toast: true,
+                        type: "success",
+                        icon: "success",
+                        text: "Successfully dissaproved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+                .catch(error => {
+                    this.componentOverlay = false;
+
+                    if (error.response.status == 422) {
+                        this.formWithdrawalErrors = error.response.data.errors;
+                    } else {
+                        console.log(error);
+                    }
+                })
+                .finally(() => {});
+        },
+
+
+        saveWithdrawal() {
             this.componentOverlay = true;
-            if (this.editedTransferIndex > -1) {
-                this.updateTransfer();
+            if (this.editedWithdrawalIndex > -1) {
+                this.updateWithdrawal();
             } else {
-                this.createTransfer();
+                this.createWithdrawal();
             }
         },
 
-        createTransfer() {
+        createWithdrawal() {
             axios
-                .post("/api/v1/offline-currency-transfer", {
-                    ..._.omit(this.editedTransferInformation, "user"),
-                    ...this.editedTransferInformation.user,
-                    password_confirmation: this.editedTransferInformation.user
+                .post("/api/v1/offline-withdraw-audit", {
+                    ..._.omit(this.editedWithdrawalInformation, "user"),
+                    ...this.editedWithdrawalInformation.user,
+                    password_confirmation: this.editedWithdrawalInformation.user
                         .password
                 })
                 .then(response => {
-                    this.fetchCurrencyTransfers();
-                    this.closeTransferForm();
+                    this.fetchWithdrawals();
+                    this.closeWithdrawalForm();
                     swal.fire({
                         position: "top-end",
                         toast: true,
@@ -318,7 +391,7 @@ export default {
                     this.componentOverlay = false;
 
                     if (error.response.status == 422) {
-                        this.formTransferErrors = error.response.data.errors;
+                        this.formWithdrawalErrors = error.response.data.errors;
                     } else {
                         console.log(error);
                     }
@@ -326,23 +399,23 @@ export default {
                 .finally(() => {});
         },
 
-        editTransfer(currencyTransfer) {
-            this.editedTransferIndex = this.tableCurrencyTransfers.indexOf(currencyTransfer);
-            this.editedTransferInformation = Object.assign({}, currencyTransfer);
-            this.formTransferDialog = true;
+        editWithdrawal(withdraw) {
+            this.editedWithdrawalIndex = this.tableWithdrawals.indexOf(withdraw);
+            this.editedWithdrawalInformation = Object.assign({}, withdraw);
+            this.formWithdrawalDialog = true;
         },
 
-        updateTransfer() {
+        updateWithdrawal() {
             axios
-                .put("/api/v1/offline-currency-transfer/" + this.editedTransferInformation.id, {
-                    ..._.omit(this.editedTransferInformation, "user"),
-                    ...this.editedTransferInformation.user,
-                    password_confirmation: this.editedTransferInformation.user
+                .put("/api/v1/offline-withdraw-audit/" + this.editedWithdrawalInformation.id, {
+                    ..._.omit(this.editedWithdrawalInformation, "user"),
+                    ...this.editedWithdrawalInformation.user,
+                    password_confirmation: this.editedWithdrawalInformation.user
                         .password
                 })
                 .then(response => {
-                    this.fetchCurrencyTransfers();
-                    this.closeTransferForm();
+                    this.fetchWithdrawals();
+                    this.closeWithdrawalForm();
                     swal.fire({
                         position: "top-end",
                         toast: true,
@@ -357,7 +430,7 @@ export default {
                     this.componentOverlay = false;
 
                     if (error.response.status == 422) {
-                        this.formTransferErrors = error.response.data.errors;
+                        this.formWithdrawalErrors = error.response.data.errors;
                     } else {
                         console.log(error);
                     }
@@ -365,7 +438,7 @@ export default {
                 .finally(() => {});
         },
 
-        deleteTransfer(currencyTransfer) {
+        deleteWithdrawal(withdraw) {
             swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -378,13 +451,13 @@ export default {
                 .then(result => {
                     if (result.value) {
                         axios
-                            .delete("/api/v1/offline-currency-transfer/" + currencyTransfer.id)
+                            .delete("/api/v1/offline-withdraw-audit/" + withdraw.id)
                             .then(() => {
-                                this.fetchCurrencyTransfers();
-                                this.closeTransferForm();
+                                this.fetchWithdrawals();
+                                this.closeWithdrawalForm();
                                 swal.fire(
                                     "Deleted!",
-                                    "Transfer has been deleted.",
+                                    "Withdrawal has been deleted.",
                                     "success"
                                 );
                             })
@@ -411,20 +484,20 @@ export default {
                 });
         },
 
-        // closeTransferForm() {
-        //     this.formTransferDialog = false;
+        // closeWithdrawalForm() {
+        //     this.formWithdrawalDialog = false;
         //     this.componentOverlay = false;
         //     this.deleteDialog = false;
         //     setTimeout(() => {
-        //         this.formTransferErrors = {
+        //         this.formWithdrawalErrors = {
         //             name: null,
         //             user: { username: null, password: null }
         //         };
-        //         this.editedTransferInformation = Object.assign(
+        //         this.editedWithdrawalInformation = Object.assign(
         //             {},
-        //             this.defaultTransferInformation
+        //             this.defaultWithdrawalInformation
         //         );
-        //         this.editedTransferIndex = -1;
+        //         this.editedWithdrawalIndex = -1;
         //     }, 500);
         // },
     },
@@ -433,7 +506,8 @@ export default {
           return next('/')
         }
         next();
-    }
+    },
+    
 };
 
 </script>

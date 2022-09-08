@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ClientWithdraw;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class IndexClientWithdrawRequest extends FormRequest
 {

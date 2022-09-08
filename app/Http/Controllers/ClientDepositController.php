@@ -8,6 +8,7 @@ use App\ClientWallet;
 use App\Http\Requests\Client\IndexClientRequest;
 use App\Http\Requests\ClientDeposit\IndexClientDepositRequest;
 use App\Http\Requests\ClientDeposit\StoreClientDepositRequest;
+use App\Http\Requests\ClientDeposit\UpdateClientDepositRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,8 @@ class ClientDepositController extends Controller
        $auth = Auth::user();
         if($auth->role == 'ADMINISTRATOR')
         {
-            $client = ClientDeposit::with('client')->get();
+            $status = $request->input('status');
+            $client = ClientDeposit::where('recharge_status', $status)->with('client')->get();
             return response()->json(
                 [
                     'clients' => $client
@@ -157,9 +159,66 @@ class ClientDepositController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateClientDepositRequest $request, ClientDeposit $deposit)
     {
         //
+        $mytime = Carbon::now();
+        $deposit = ClientDeposit::where('id', $deposit->id)->first();
+        
+        $deposit->update(
+            [
+                'recharge_status' => $request->input('status'),
+                'response_time' =>  $mytime->toDateTimeString(),
+            ]
+        );
+
+        if($deposit->recharge_status == 'DISSAPROVED')
+        {
+            return response()->json([
+                'message' => 'success'
+            ]);
+        }
+        else
+        {
+            if($deposit->transaction_type == 'RECHARGE')
+            {
+                $clientWallet = ClientWallet::where('id', $deposit->client_wallet_id)->where('client_id', $deposit->client_id)->first();
+                $totalDeposit = $deposit->recharge_amount + $clientWallet->wallet_balance;
+                
+                $clientWallet->update(
+                    [
+                        'wallet_balance' => $totalDeposit
+                    ]
+                );
+            }
+            elseif($deposit->transaction_type == 'DEDUCTION')
+            {
+                $clientWallet = ClientWallet::where('id', $deposit->client_wallet_id)->where('client_id', $deposit->client_id)->first();
+    
+                if($clientWallet->wallet_balance <= 0)
+                {
+                    return response()->json(
+                        [
+                            'message' => 'SOMETHING WENT WRONG'
+                        ]
+                    );
+                }
+                else
+                {   
+                    $totalDeposit = $clientWallet->wallet_balance - $deposit->recharge_amount;
+                    $clientWallet->update(
+                    [
+                        'wallet_balance' => $totalDeposit
+                    ]
+                );
+                }
+                
+            }
+        }
+
+        
+
+       
     }
 
     /**

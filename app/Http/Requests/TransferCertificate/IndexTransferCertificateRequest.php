@@ -3,6 +3,7 @@
 namespace App\Http\Requests\TransferCertificate;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class IndexTransferCertificateRequest extends FormRequest
 {

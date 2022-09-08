@@ -46,11 +46,11 @@
                                 }}
                             </template>
                             <template v-slot:item.actions="{ item }">
-                                <v-btn icon @click="editDeposit(item)">
-                                    <v-icon>mdi-pencil</v-icon>
+                                <v-btn icon @click="approveDeposit(item)">
+                                    <v-icon color="primary">mdi-check</v-icon>
                                 </v-btn>
-                                <v-btn icon @click="deleteDeposit(item)">
-                                    <v-icon>mdi-delete</v-icon>
+                                <v-btn icon @click="declineDeposit(item)">
+                                    <v-icon color="red">mdi-close</v-icon>
                                 </v-btn>
                             </template>
                         </v-data-table>
@@ -187,6 +187,7 @@ export default {
                 { text: "Nickname", value: "client.nickname" },
                 { text: "Top-up Account", value: "top_up_account" },
                 { text: "Recharge Amount", value: "recharge_amount" },
+                { text: "Transaction Type", value: "transaction_type" },
                 { text: "Included in Performance", value: "included_in_performance" },
                 { text: "Recharge Status", value: "recharge_status" },
                 { text: "Account Type", value: "account_type" },
@@ -215,13 +216,8 @@ export default {
                 address: null,
                 number: null,
                 user: { username: null, password: null },
-                latitude: 6.9214,
-                longitude: 122.079
             },
 
-            //Google Maps Variables
-            center: { lat: 6.9214, lng: 122.079 },
-            address: { lat: 6.9214, lng: 122.079 },
 
             rules: {
                 required: [
@@ -276,7 +272,11 @@ export default {
             this.tableLoading = true;
             this.componentOverlay = true;
             axios
-                .get("/api/v1/deposits")
+                .get("/api/v1/deposits", {
+                    params: {
+                        status: 'PENDING'
+                    }
+                })
                 .then(response => {
                     this.tableDeposits = response.data.clients;
                 })
@@ -288,6 +288,77 @@ export default {
                     this.tableLoading = false;
                 });
         },
+
+        approveDeposit(deposit)
+        {
+
+                this.editedDepositIndex = this.tableDeposits.indexOf(deposit);
+                this.editedDepositInformation = Object.assign({}, deposit);
+
+                
+            axios
+                .put("/api/v1/deposits/" + this.editedDepositInformation.id, {
+                    status: 'APPROVED'
+                })
+                .then(response => {
+                    this.fetchDeposits();
+                    swal.fire({
+                        position: "top-end",
+                        toast: true,
+                        type: "success",
+                        icon: "success",
+                        text: "Successfully Approved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+                .catch(error => {
+                    this.componentOverlay = false;
+
+                    if (error.response.status == 422) {
+                        this.formDepositErrors = error.response.data.errors;
+                    } else {
+                        console.log(error);
+                    }
+                })
+                .finally(() => {});
+        },
+
+        declineDeposit(deposit)
+        {
+
+                this.editedDepositIndex = this.tableDeposits.indexOf(deposit);
+                this.editedDepositInformation = Object.assign({}, deposit);
+
+                
+            axios
+                .put("/api/v1/deposits/" + this.editedDepositInformation.id, {
+                    status: 'DISSAPROVED'
+                })
+                .then(response => {
+                    this.fetchDeposits();
+                    swal.fire({
+                        position: "top-end",
+                        toast: true,
+                        type: "success",
+                        icon: "success",
+                        text: "Successfully dissaproved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+                .catch(error => {
+                    this.componentOverlay = false;
+
+                    if (error.response.status == 422) {
+                        this.formDepositErrors = error.response.data.errors;
+                    } else {
+                        console.log(error);
+                    }
+                })
+                .finally(() => {});
+        },
+
 
         saveDeposit() {
             this.componentOverlay = true;

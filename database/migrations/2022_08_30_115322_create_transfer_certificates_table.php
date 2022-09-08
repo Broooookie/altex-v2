@@ -14,8 +14,9 @@ class CreateTransferCertificatesTable extends Migration
     public function up()
     {
         Schema::create('transfer_certificates', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('client_deposit_id');
+            $table->bigIncrements('id');
+            $table->uuid('uid');
+            $table->unsignedBigInteger('client_deposit_id');
             $table->foreign('client_deposit_id')->references('id')->on('client_deposits')->onDelete('cascade');
             $table->string('state');
             $table->string('image');

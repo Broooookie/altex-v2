@@ -2,6 +2,7 @@
 
 use App\Client;
 use App\ClientWallet;
+use App\ClientWithdraw;
 use App\Coin;
 use App\Hospital;
 use App\User;
@@ -64,8 +65,67 @@ class UserTableSeeder extends Seeder
         $clientWallet = ClientWallet::create([
             'client_id' => $client->id,
             'coin_id' => $coin->id,
-            'wallet_balance' => 0,
+            'wallet_balance' => 100000,
         ]);
+
+
+        $withdraw = ClientWithdraw::create(
+            [
+                'client_id' => $client->id,
+                'client_wallet_id' => $clientWallet->id,
+                'bchain_name' => 'TRC20',
+                'withdraw_address' => 'ASDASD',
+                'withdraw_amount' => 100, 
+                'miner_fee' => 1,
+                'arrival_quantity' => 99,
+                'state' => 'ONHOLD',
+                'application_time' => now(),
+                'ip_address' => now(),
+            ]
+        );
+
+        ClientWithdraw::create(
+            [
+                'client_id' => $client->id,
+                'client_wallet_id' => $clientWallet->id,
+                'bchain_name' => 'TRC20',
+                'withdraw_address' => 'ASDASD',
+                'withdraw_amount' => 100, 
+                'miner_fee' => 1,
+                'arrival_quantity' => 99,
+                'state' => 'ONHOLD',
+                'application_time' => now(),
+                'ip_address' => now(),
+            ]
+        );
+        ClientWithdraw::create(
+            [
+                'client_id' => $client->id,
+                'client_wallet_id' => $clientWallet->id,
+                'bchain_name' => 'TRC20',
+                'withdraw_address' => 'ASDASD',
+                'withdraw_amount' => 100, 
+                'miner_fee' => 1,
+                'arrival_quantity' => 99,
+                'state' => 'ONHOLD',
+                'application_time' => now(),
+                'ip_address' => now(),
+            ]
+        );
+        ClientWithdraw::create(
+            [
+                'client_id' => $client->id,
+                'client_wallet_id' => $clientWallet->id,
+                'bchain_name' => 'TRC20',
+                'withdraw_address' => 'ASDASD',
+                'withdraw_amount' => 100, 
+                'miner_fee' => 1,
+                'arrival_quantity' => 99,
+                'state' => 'ONHOLD',
+                'application_time' => now(),
+                'ip_address' => now(),
+            ]
+        );
 
        
     }

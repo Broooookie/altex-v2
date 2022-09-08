@@ -40,6 +40,9 @@ Route::group(['middleware' => 'forceJsonResponse'], function () {
             Route::apiResource('clients', 'ClientController');
             Route::apiResource('coins', 'CoinController');
             Route::apiResource('deposits', 'ClientDepositController');
+            Route::apiResource('withdrawals', 'ClientWithdrawController');
+            Route::apiResource('wallets', 'ClientWalletController');
+            Route::apiResource('chart', 'CoinChartDataController');
             // Route::apiResource('hospitals', 'HospitalController');
 
         }

@@ -184,7 +184,7 @@ export default {
                 { text: "Email", value: "email" },
                 { text: "UID", value: "id" },
                 { text: "Nickname", value: "nickname" },
-                { text: "Coin", value: "coin.name" },
+                { text: "Currency", value: "coin.name" },
                 { text: "Deposit", value: "deposit" },
                 { text: "withdrawal", value: "withdrawal" },
                 { text: "Performance Coin", value: "" },
