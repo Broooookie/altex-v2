@@ -87,7 +87,7 @@ class CoinController extends Controller
     public function update(UpdateCoinRequest $request, Coin $coin)
     {
         //
-        $coin = Coin::where('id', $coin)->first();
+        $coin = Coin::where('id', $coin->id)->first();
         $coin->update($request->validated());
 
         return response()->json(

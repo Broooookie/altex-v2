@@ -16,6 +16,9 @@ import AdminWithdrawalAudit from '../components/views/Administrator/WithdrawalMa
 import AdminQuickSellingRecord from '../components/views/Administrator/WithdrawalManagement/QuickSellingRecord.vue'
 import AdminUserWithdrawalRecord from '../components/views/Administrator/WithdrawalManagement/UserWithdrawalRecord.vue'
 
+import AdminCoins from '../components/views/Administrator/Settings/Coins.vue'
+import AdminCoinpairs from '../components/views/Administrator/Settings/CoinPairs.vue'
+
 
 
 
@@ -37,6 +40,10 @@ let adminRoutes = {
     { path: "/administrator/user-withdrawal-record", name: "user-withdrawal-record", components: { default: AdminUserWithdrawalRecord }},
     { path: "/administrator/quick-selling-record", name: "user-withdrawal-record", components: { default: AdminQuickSellingRecord }},
     { path: "/administrator/customer-withdrawal-statistics", name: "user-withdrawal-record", components: { default: AdminCustomerWithdrawalStatistics }},
+
+    {path: "/administrator/coins", name: "coins", components: { default: AdminCoins}},
+    {path: "/administrator/coin-pairs", name: "coin-pairs", components: { default: AdminCoinpairs}},
+
     
   ]
 };

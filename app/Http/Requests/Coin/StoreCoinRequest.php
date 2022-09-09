@@ -34,7 +34,7 @@ class StoreCoinRequest extends FormRequest
         return [
             //
             'name' => 'required|unique:coins',
-            'logo' => 'string|nullable'
+            'image' => 'string'
         ];
     }
 }

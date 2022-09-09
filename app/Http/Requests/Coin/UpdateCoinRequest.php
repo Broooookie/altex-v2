@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Coin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateCoinRequest extends FormRequest
 {
@@ -33,7 +35,7 @@ class UpdateCoinRequest extends FormRequest
         $name = $this->request->get("name");
         return [
             'name' => ['required', Rule::unique('coins')->ignore($name, 'name')],
-            'logo' => 'string'
+            'image' => 'string'
         ];
     }
 }

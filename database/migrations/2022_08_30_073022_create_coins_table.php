@@ -17,7 +17,7 @@ class CreateCoinsTable extends Migration
             $table->bigIncrements('id');
             $table->uuid('uid');
             $table->string('name');
-            $table->string('logo');
+            $table->string('image');
             $table->timestamps();
         });
     }

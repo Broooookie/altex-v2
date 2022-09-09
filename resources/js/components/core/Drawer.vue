@@ -226,13 +226,13 @@ export default {
 
         settingsLinks: [
             {
-                to: "/administrator/customer-management",
+                to: "/administrator/coins",
                 icon: "mdi-chart-areaspline",
                 text: "Coins",
                 module: "adminSettingCoins"
             },
             {
-                to: "/administrator/performance-statistics",
+                to: "/administrator/coin-pairs",
                 icon: "mdi-chart-areaspline",
                 text: "Coin Pairs",
                 module: "adminSettingCoinPairs"
